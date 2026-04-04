@@ -1,0 +1,7 @@
+﻿services:
+  musicuser:
+    image: musicuser
+    build:
+      context: .
+      dockerfile: MusicUser/Dockerfile
+
