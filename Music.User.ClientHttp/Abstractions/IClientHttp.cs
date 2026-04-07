@@ -1,6 +1,8 @@
+using Music.Catalogue.Shared;
+
 namespace Music.User.ClientHttp.Abstractions;
 
-public class IClientHttp
+public interface IClientHttp
 {
-    Task<List<>?> GetCanzoniUtenteAsync(int userId, CancellationToken cancellationToken);
+    Task<List<SongDTO>?> GetCanzoniUtenteAsync(int userId, CancellationToken cancellationToken);
 }
