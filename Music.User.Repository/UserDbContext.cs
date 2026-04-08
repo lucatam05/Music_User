@@ -10,6 +10,7 @@ public class UserDbContext(DbContextOptions<UserDbContext> dbContextOptions) : D
     {
 
         modelBuilder.Entity<Users>().HasKey(s => s.Id);
+        modelBuilder.Entity<Users>().Property(s => s.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Users>().ToTable("Users");
     }
 
