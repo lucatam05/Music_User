@@ -19,8 +19,9 @@ public class Business(IRepository repository, IConfiguration configuration) : IB
         Users? user = await repository.GetUserPerEmailAsync(email, cancellationToken);
         if (user is not null)
             throw new DoubleRegisterException("Utente già registrato");
-        
+
         await repository.InsertUserAsync(nome, cognome, dataNascita, email, username, password, cancellationToken);
+        //TODO chiamare MusicLibraary per creare la libreria per l'utente appena registrato
     }
 
     public async Task<string?> LoginAsync(string email, string password, CancellationToken cancellationToken)
