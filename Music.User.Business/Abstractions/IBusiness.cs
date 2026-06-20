@@ -1,4 +1,5 @@
-using Music.User.Shared;
+using Music.Catalogue.Shared;
+using Music.Library.Shared;
 
 namespace Music.User.Business.Abstractions;
 
@@ -8,5 +9,7 @@ public interface IBusiness
         string email, string password, CancellationToken cancellationToken);
 
     Task<string?> LoginAsync(string email, string password, CancellationToken cancellationToken);
+    Task<List<LibrarySongDTO>?> GetCanzoniUtenteAsync(string token, CancellationToken cancellationToken);
+    Task<List<SongDTO>?> GetCanzoniPopolariAsync(string token, CancellationToken cancellationToken);
     Task UpdateNumeroCanzoniAsync(int id, CancellationToken cancellationToken);
 }

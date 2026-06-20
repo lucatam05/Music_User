@@ -4,14 +4,17 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Music.Catalogue.Shared;
+using Music.Library.Shared;
 using Music.User.Business.Abstractions;
+using Music.User.ClientHttp.Abstractions;
 using Music.User.Repository.Abstractions;
 using Music.User.Repository.Model;
 using Music.User.Shared.Exceptions;
 
 namespace Music.User.Business;
 
-public class Business(IRepository repository, IConfiguration configuration) : IBusiness
+public class Business(IRepository repository, IConfiguration configuration, IClientHttp clientHttp, Music.Library.ClientHttp.Abstractions.IClientHttp libraryClient) : IBusiness
 {
     public async Task RegisterAsync(string nome, string cognome, DateTime dataNascita, string username, string email, string password,
         CancellationToken cancellationToken)
@@ -20,8 +23,8 @@ public class Business(IRepository repository, IConfiguration configuration) : IB
         if (user is not null)
             throw new DoubleRegisterException("Utente già registrato");
 
-        await repository.InsertUserAsync(nome, cognome, dataNascita, email, username, password, cancellationToken);
-        //TODO chiamare MusicLibraary per creare la libreria per l'utente appena registrato
+        var newUser = await repository.InsertUserAsync(nome, cognome, dataNascita, email, username, password, cancellationToken);
+        await libraryClient.CreateLibraryAsync(newUser.Id, cancellationToken);
     }
 
     public async Task<string?> LoginAsync(string email, string password, CancellationToken cancellationToken)
@@ -44,6 +47,16 @@ public class Business(IRepository repository, IConfiguration configuration) : IB
             throw new ModelNotFoundException("Password non corretta!");
         
         return GenerateJwtToken(user);
+    }
+    
+    public async Task<List<LibrarySongDTO>?> GetCanzoniUtenteAsync(string token, CancellationToken cancellationToken)
+    {
+        return await clientHttp.GetCanzoniUtenteAsync(token, cancellationToken);
+    }
+
+    public async Task<List<SongDTO>?> GetCanzoniPopolariAsync(string token, CancellationToken cancellationToken)
+    {
+        return await clientHttp.GetCanzoniPopolariAsync(token, cancellationToken);
     }
 
     public async Task UpdateNumeroCanzoniAsync(int id, CancellationToken cancellationToken)

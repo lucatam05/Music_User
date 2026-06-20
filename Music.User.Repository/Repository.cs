@@ -20,7 +20,7 @@ public class Repository(UserDbContext userDbContext) : IRepository
             FirstOrDefaultAsync(u => u.Email == mail, cancellationToken);
     }
 
-    public async Task InsertUserAsync(string nome, string cognome, DateTime dataNascita, string username,
+    public async Task<Users> InsertUserAsync(string nome, string cognome, DateTime dataNascita, string username,
         string email, string password, CancellationToken cancellationToken)
     {
         byte[] salt = RandomNumberGenerator.GetBytes(16);
@@ -43,6 +43,7 @@ public class Repository(UserDbContext userDbContext) : IRepository
         
         userDbContext.Add(user);
         await userDbContext.SaveChangesAsync(cancellationToken);
+        return user;
     }
 
     public async Task UpdateNumeroCanzoniAsync(int id, CancellationToken cancellationToken)

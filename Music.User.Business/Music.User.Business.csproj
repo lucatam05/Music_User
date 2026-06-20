@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Music.User.ClientHttp\Music.User.ClientHttp.csproj" />
       <ProjectReference Include="..\Music.User.Repository\Music.User.Repository.csproj" />
       <ProjectReference Include="..\Music.User.Shared\Music.User.Shared.csproj" />
     </ItemGroup>
