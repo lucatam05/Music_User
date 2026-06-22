@@ -1,7 +1,7 @@
 using System.Text.Json;
-using Music.Library.Shared.Events;
 using Utility.Kafka.Abstractions.MessageHandlers;
 using Music.User.Business.Abstractions;
+using Music.Library.Shared.Events;
 
 public class SongAddedHandler(IBusiness business) : IMessageHandler<string, string>
 {

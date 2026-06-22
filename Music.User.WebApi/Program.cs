@@ -6,6 +6,7 @@ using Music.User.Business;
 using Music.User.Business.Abstractions;
 using Music.User.Repository;
 using Music.User.Repository.Abstractions;
+using MusicUser.Kafka;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,11 @@ builder.Services.AddHttpClient<Music.Library.ClientHttp.Abstractions.IClientHttp
 
 // ClientHttp del UserService (orchestratore)
 builder.Services.AddScoped<Music.User.ClientHttp.Abstractions.IClientHttp, Music.User.ClientHttp.ClientHttp>();
+
+builder.Services.AddScoped<SongAddedHandler>();
+
+builder.Services.AddKafkaConsumerService<UserKafkaTopics, MessageHandlerFactory>(builder.Configuration);
+
 
 // JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
