@@ -22,7 +22,10 @@ builder.Services.AddScoped<IBusiness, Business>();
 builder.Services.AddHttpClient<Music.Catalogue.ClientHttp.Abstractions.IClientHttp, Music.Catalogue.ClientHttp.ClientHttp>("CatalogueClient");
 
 // ClientHttp verso LibraryService
-builder.Services.AddHttpClient<Music.Library.ClientHttp.Abstractions.IClientHttp, Music.Library.ClientHttp.ClientHttp>("LibraryClient");
+builder.Services.AddHttpClient<Music.Library.ClientHttp.Abstractions.IClientHttp, Music.Library.ClientHttp.ClientHttp>("LibraryClient", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["Services:Library"]!);
+});
 
 // ClientHttp del UserService (orchestratore)
 builder.Services.AddScoped<Music.User.ClientHttp.Abstractions.IClientHttp, Music.User.ClientHttp.ClientHttp>();
