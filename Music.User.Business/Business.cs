@@ -23,7 +23,7 @@ public class Business(IRepository repository, IConfiguration configuration, ICli
         if (user is not null)
             throw new DoubleRegisterException("Utente già registrato");
 
-        var newUser = await repository.InsertUserAsync(nome, cognome, dataNascita, email, username, password, cancellationToken);
+        var newUser = await repository.InsertUserAsync(nome, cognome, dataNascita, username, email, password, cancellationToken);
         await libraryClient.CreateLibraryAsync(newUser.Id, cancellationToken);
     }
 
