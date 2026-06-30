@@ -11,6 +11,11 @@ public class UserDbContext(DbContextOptions<UserDbContext> dbContextOptions) : D
 
         modelBuilder.Entity<Users>().HasKey(s => s.Id);
         modelBuilder.Entity<Users>().Property(s => s.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<Users>()
+            .Property(u => u.DataNascita)
+            .HasConversion(
+                v => DateTime.SpecifyKind(v, DateTimeKind.Utc),
+                v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
         modelBuilder.Entity<Users>().ToTable("Users");
     }
 
