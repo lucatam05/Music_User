@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Music.User.Business;
 using Music.User.Business.Abstractions;
 using Music.User.Repository;
@@ -34,8 +35,10 @@ builder.Services.AddScoped<SongAddedHandler>();
 
 builder.Services.AddKafkaConsumerService<UserKafkaTopics, MessageHandlerFactory>(builder.Configuration);
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-// JWT
+// JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -44,16 +47,58 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]!)),
+
             ValidateIssuer = true,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
+
             ValidateAudience = true,
-            ValidAudience = builder.Configuration["Jwt:Audience"]
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
         };
     });
 
+builder.Services.AddAuthorization();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Music Library API",
+        Version = "v1",
+        Description = "API per la gestione della libreria musicale"
+    });
+
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = JwtBearerDefaults.AuthenticationScheme.ToLower(),
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Inserisci il token nel formato: Bearer {token}"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
 
 var app = builder.Build();
 
