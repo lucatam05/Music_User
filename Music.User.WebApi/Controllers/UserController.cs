@@ -6,6 +6,7 @@ using Music.User.Shared.Exceptions;
 namespace MusicUser.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("[controller]/[action]")]
 public class UserController(IBusiness business) : ControllerBase
 {
