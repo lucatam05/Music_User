@@ -35,9 +35,6 @@ builder.Services.AddScoped<SongAddedHandler>();
 
 builder.Services.AddKafkaConsumerService<UserKafkaTopics, MessageHandlerFactory>(builder.Configuration);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 // JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -68,9 +65,9 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Music Library API",
+        Title = "Music User API",
         Version = "v1",
-        Description = "API per la gestione della libreria musicale"
+        Description = "API per la gestione dell'utente"
     });
 
     options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
