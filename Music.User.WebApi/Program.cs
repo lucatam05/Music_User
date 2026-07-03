@@ -19,9 +19,6 @@ builder.Services.AddDbContext<UserDbContext>(options =>
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<IBusiness, Business>();
 
-// ClientHttp verso CatalogueService
-builder.Services.AddHttpClient<Music.Catalogue.ClientHttp.Abstractions.IClientHttp, Music.Catalogue.ClientHttp.ClientHttp>("CatalogueClient");
-
 // ClientHttp verso LibraryService
 builder.Services.AddHttpClient<Music.Library.ClientHttp.Abstractions.IClientHttp, Music.Library.ClientHttp.ClientHttp>("LibraryClient", client =>
 {
@@ -34,8 +31,6 @@ builder.Services.AddHttpClient<Music.Catalogue.ClientHttp.Abstractions.IClientHt
 {
     client.BaseAddress = new Uri(builder.Configuration["Services:Catalogue"]!);
 });
-
-
 
 // ClientHttp del UserService (orchestratore)
 builder.Services.AddScoped<Music.User.ClientHttp.Abstractions.IClientHttp, Music.User.ClientHttp.ClientHttp>();
