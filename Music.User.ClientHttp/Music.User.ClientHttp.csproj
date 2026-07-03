@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="music.catalogue.clienthttp" Version="1.0.9" />
+      <PackageReference Include="music.catalogue.clienthttp" Version="1.0.10" />
       <PackageReference Include="music.catalogue.shared" Version="1.0.6" />
       <PackageReference Include="Music.Library.ClientHttp" Version="1.0.8" />
       <PackageReference Include="Music.Library.Shared" Version="1.0.3" />
