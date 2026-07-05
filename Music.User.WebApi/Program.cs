@@ -99,7 +99,8 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-
+Console.WriteLine($"Kafka BootstrapServers: {builder.Configuration["Kafka:ConsumerClient:BootstrapServers"]}");
+Console.WriteLine($"Kafka GroupId: {builder.Configuration["Kafka:ConsumerClient:GroupId"]}");
 var app = builder.Build();
 
 // Migrations
