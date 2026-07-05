@@ -35,6 +35,7 @@ builder.Services.AddHttpClient<Music.Catalogue.ClientHttp.Abstractions.IClientHt
 builder.Services.AddScoped<Music.User.ClientHttp.Abstractions.IClientHttp, Music.User.ClientHttp.ClientHttp>();
 
 builder.Services.AddScoped<SongAddedHandler>();
+builder.Services.AddScoped<SongRemovedHandler>();
 
 builder.Services.AddKafkaConsumerService<UserKafkaTopics, MessageHandlerFactory>(builder.Configuration);
 
