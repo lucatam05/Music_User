@@ -59,9 +59,14 @@ public class Business(IRepository repository, IConfiguration configuration, ICli
         return await clientHttp.GetCanzoniPopolariAsync(token, cancellationToken);
     }
 
-    public async Task UpdateNumeroCanzoniAsync(int id, CancellationToken cancellationToken)
+    public async Task IncrementNumeroCanzoniAsync(int id, CancellationToken cancellationToken)
     {
-        await repository.UpdateNumeroCanzoniAsync(id, cancellationToken);
+        await repository.IncrementNumeroCanzoniAsync(id, cancellationToken);
+    }
+
+    public async Task DecrementNumeroCanzoniAsync(int id, CancellationToken cancellationToken)
+    {
+        await repository.DecrementNumeroCanzoniAsync(id, cancellationToken);
     }
     
     private string GenerateJwtToken(Users user)

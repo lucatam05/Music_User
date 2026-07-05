@@ -5,18 +5,18 @@ using Music.Library.Shared.Events;
 
 namespace MusicUser.Kafka;
 
-public class SongAddedHandler(IBusiness business) : IMessageHandler<string, string>
+public class SongRemovedHandler(IBusiness business) : IMessageHandler<string, string>
 {
     public async Task OnMessageReceivedAsync(string key, string message, CancellationToken cancellationToken = default)
     {
         Console.WriteLine($"Messaggio ricevuto: {message}");
-        var songAddedEvent = JsonSerializer.Deserialize<SongAddedEvent>(message);
-        if (songAddedEvent is null)
+        var songRemovedEvent = JsonSerializer.Deserialize<SongRemovedEvent>(message);
+        if (songRemovedEvent is null)
         {
             Console.WriteLine("Deserializzazione fallita!");
             return;
         }
-        Console.WriteLine($"UserId: {songAddedEvent.UserId}");
-        await business.IncrementNumeroCanzoniAsync(songAddedEvent.UserId, cancellationToken);
+        Console.WriteLine($"UserId: {songRemovedEvent.UserId}");
+        await business.DecrementNumeroCanzoniAsync(songRemovedEvent.UserId, cancellationToken);
     }
 }

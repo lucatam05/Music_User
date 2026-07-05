@@ -46,12 +46,21 @@ public class Repository(UserDbContext userDbContext) : IRepository
         return user;
     }
 
-    public async Task UpdateNumeroCanzoniAsync(int id, CancellationToken cancellationToken)
+    public async Task IncrementNumeroCanzoniAsync(int id, CancellationToken cancellationToken)
     {
         Users? user = await GetUserPerId(id, cancellationToken);
         if (user is null)
             throw new ModelNotFoundException("Utente non trovato");
         user.NumeroCanzoni += 1;
+        await userDbContext.SaveChangesAsync(cancellationToken);
+    }
+    
+    public async Task DecrementNumeroCanzoniAsync(int id, CancellationToken cancellationToken)
+    {
+        Users? user = await GetUserPerId(id, cancellationToken);
+        if (user is null)
+            throw new ModelNotFoundException("Utente non trovato");
+        user.NumeroCanzoni -= 1;
         await userDbContext.SaveChangesAsync(cancellationToken);
     }
 

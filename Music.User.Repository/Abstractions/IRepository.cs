@@ -8,5 +8,6 @@ public interface IRepository
     Task<Users?> GetUserPerEmailAsync(string mail, CancellationToken cancellationToken);
     Task<Users> InsertUserAsync(string nome, string cognome, DateTime dataNascita, string username, string email,
         string password, CancellationToken cancellationToken);
-    Task UpdateNumeroCanzoniAsync(int id, CancellationToken cancellationToken);
+    Task IncrementNumeroCanzoniAsync(int id, CancellationToken cancellationToken);
+    Task DecrementNumeroCanzoniAsync(int id, CancellationToken cancellationToken);
 }

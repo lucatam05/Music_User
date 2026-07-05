@@ -11,5 +11,6 @@ public interface IBusiness
     Task<string?> LoginAsync(string email, string password, CancellationToken cancellationToken);
     Task<List<LibrarySongDTO>?> GetCanzoniUtenteAsync(string token, CancellationToken cancellationToken);
     Task<List<SongDTO>?> GetCanzoniPopolariAsync(string token, CancellationToken cancellationToken);
-    Task UpdateNumeroCanzoniAsync(int id, CancellationToken cancellationToken);
+    Task IncrementNumeroCanzoniAsync(int id, CancellationToken cancellationToken);
+    Task DecrementNumeroCanzoniAsync(int id, CancellationToken cancellationToken);
 }

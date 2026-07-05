@@ -8,7 +8,11 @@ public class MessageHandlerFactory : IMessageHandlerFactory<string, string>
         return topic switch
         {
             "song-added-to-library" => serviceProvider.GetRequiredService<SongAddedHandler>(),
+            
+            "song-removed-from-library" => serviceProvider.GetRequiredService<SongRemovedHandler>(),
+            
             _ => throw new ArgumentException($"Topic non gestito: {topic}")
+            
         };
     }
 }
