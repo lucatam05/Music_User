@@ -13,8 +13,8 @@
     <ItemGroup>
       <PackageReference Include="music.catalogue.clienthttp" Version="1.0.10" />
       <PackageReference Include="music.catalogue.shared" Version="1.0.6" />
-      <PackageReference Include="Music.Library.ClientHttp" Version="2.0.0" />
-      <PackageReference Include="Music.Library.Shared" Version="2.0.0" />
+      <PackageReference Include="Music.Library.ClientHttp" Version="2.0.1" />
+      <PackageReference Include="Music.Library.Shared" Version="2.0.1" />
     </ItemGroup>
 
 </Project>
