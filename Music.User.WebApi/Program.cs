@@ -108,8 +108,10 @@ var db = scope.ServiceProvider.GetRequiredService<UserDbContext>();
 db.Database.Migrate();
 
 app.UseSwagger();
-app.UseSwaggerUI();
-app.MapGet("/", () => Results.Redirect("/swagger"));
+app.UseSwaggerUI(c =>
+{
+    c.RoutePrefix = string.Empty;
+});
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
