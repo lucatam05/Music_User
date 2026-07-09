@@ -54,7 +54,7 @@ public class UserController(IBusiness business) : ControllerBase
             var canzoni = await business.GetCanzoniUtenteAsync(token, cancellationToken);
             return Ok(canzoni);
         }
-        catch (Music.User.Shared.Exceptions.ModelNotFoundException ex)
+        catch (Music.Catalogue.Shared.Exceptions.ModelNotFoundException ex)
         {
             return NotFound(ex.Message);
         }
@@ -71,7 +71,7 @@ public class UserController(IBusiness business) : ControllerBase
             var canzoni = await business.GetCanzoniPopolariAsync(token, cancellationToken);
             return Ok(canzoni);
         }
-        catch (Music.User.Shared.Exceptions.ModelNotFoundException ex)
+        catch (Music.Catalogue.Shared.Exceptions.ModelNotFoundException ex)
         {
             return NotFound(ex.Message);
         }

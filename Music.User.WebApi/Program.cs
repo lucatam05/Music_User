@@ -109,6 +109,7 @@ db.Database.Migrate();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+app.MapGet("/", () => Results.Redirect("/swagger"));
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
