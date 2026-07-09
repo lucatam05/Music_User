@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Music.User.Business.Abstractions;
 using Music.User.Shared.Exceptions;
+using Music.Catalogue.Shared.Exceptions;
 
 namespace MusicUser.Controllers;
 
@@ -36,7 +37,7 @@ public class UserController(IBusiness business) : ControllerBase
             string? token = await business.LoginAsync(email, password, cancellationToken);
             return Ok(token);
         }
-        catch (ModelNotFoundException ex)
+        catch (Music.User.Shared.Exceptions.ModelNotFoundException ex)
         {
             return NotFound(ex.Message);
         }
@@ -53,7 +54,7 @@ public class UserController(IBusiness business) : ControllerBase
             var canzoni = await business.GetCanzoniUtenteAsync(token, cancellationToken);
             return Ok(canzoni);
         }
-        catch (ModelNotFoundException ex)
+        catch (Music.User.Shared.Exceptions.ModelNotFoundException ex)
         {
             return NotFound(ex.Message);
         }
@@ -70,7 +71,7 @@ public class UserController(IBusiness business) : ControllerBase
             var canzoni = await business.GetCanzoniPopolariAsync(token, cancellationToken);
             return Ok(canzoni);
         }
-        catch (ModelNotFoundException ex)
+        catch (Music.User.Shared.Exceptions.ModelNotFoundException ex)
         {
             return NotFound(ex.Message);
         }
