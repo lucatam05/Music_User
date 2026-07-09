@@ -108,11 +108,9 @@ var db = scope.ServiceProvider.GetRequiredService<UserDbContext>();
 db.Database.Migrate();
 
 app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.RoutePrefix = string.Empty;
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Music.User.WebApi v1");
-});
+app.UseSwaggerUI();
+app.MapGet("/", () => Results.Redirect("/swagger"))
+    .ExcludeFromDescription();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
