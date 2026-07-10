@@ -72,4 +72,3 @@ Il UserService è in ascolto sul topic Kafka `song-added-to-library` e `song-rem
 ## Come eseguire in locale
 
 Il modo consigliato è tramite Docker Compose dal repository [Music_Compose](https://github.com/lucatam05/Music_Compose).
-Swagger sarà disponibile su `http://localhost:5003/swagger`.
