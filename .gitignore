@@ -10,8 +10,12 @@
 *.suo
 
 # .NET build artifacts
-bin/
-obj/
+**/bin/
+**/obj/
+
+# Secrets
+appsettings.Development.json
+.env
 
 # Logs
 *.log
