@@ -7,6 +7,7 @@ using Music.User.Business;
 using Music.User.Business.Abstractions;
 using Music.User.Repository;
 using Music.User.Repository.Abstractions;
+using MusicUser;
 using MusicUser.Kafka;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,17 +20,7 @@ builder.Services.AddDbContext<UserDbContext>(options =>
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<IBusiness, Business>();
 
-// ClientHttp verso LibraryService
-builder.Services.AddHttpClient<Music.Library.ClientHttp.Abstractions.IClientHttp, Music.Library.ClientHttp.ClientHttp>("LibraryClient", client =>
-{
-    client.BaseAddress = new Uri(builder.Configuration["Services:Library"]!);
-});
-
-//ClientHttp verso CatalogueService
-builder.Services.AddHttpClient<Music.Catalogue.ClientHttp.Abstractions.IClientHttp, Music.Catalogue.ClientHttp.ClientHttp>("CatalogueClient", client =>
-{
-    client.BaseAddress = new Uri(builder.Configuration["Services:Catalogue"]!);
-});
+builder.Services.AddResilientHttpClients(builder.Configuration);
 
 // ClientHttp del UserService (orchestratore)
 builder.Services.AddScoped<Music.User.ClientHttp.Abstractions.IClientHttp, Music.User.ClientHttp.ClientHttp>();
