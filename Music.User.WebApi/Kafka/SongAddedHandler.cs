@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Serilog.Context;
 using Utility.Kafka.Abstractions.MessageHandlers;
 using Music.User.Business.Abstractions;
 using Music.Library.Shared.Events;
@@ -14,6 +15,12 @@ public class SongAddedHandler(IBusiness business) : IMessageHandler<string, stri
         {
             return;
         }
-        await business.IncrementNumeroCanzoniAsync(songAddedEvent.UserId, cancellationToken);
+
+        // Riaggancia il CorrelationId originato dalla richiesta HTTP lato LibraryService,
+        // così i log di questo consumer risultano correlabili a quelli del producer
+        using (LogContext.PushProperty("CorrelationId", songAddedEvent.CorrelationId))
+        {
+            await business.IncrementNumeroCanzoniAsync(songAddedEvent.UserId, cancellationToken);
+        }
     }
 }

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Http.Resilience;
+using MusicUser.Http;
 using Polly;
 
 namespace MusicUser;
@@ -7,16 +8,20 @@ public static class UserResilienceExtensions
 {
     public static IServiceCollection AddResilientHttpClients(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddTransient<CorrelationIdDelegatingHandler>();
+
         services.AddHttpClient<Music.Library.ClientHttp.Abstractions.IClientHttp, Music.Library.ClientHttp.ClientHttp>("LibraryClient", client =>
             {
                 client.BaseAddress = new Uri(configuration["Services:Library"]!);
             })
+            .AddHttpMessageHandler<CorrelationIdDelegatingHandler>()
             .AddStandardResilienceHandler(ConfigureInternalResilience);
 
         services.AddHttpClient<Music.Catalogue.ClientHttp.Abstractions.IClientHttp, Music.Catalogue.ClientHttp.ClientHttp>("CatalogueClient", client =>
             {
                 client.BaseAddress = new Uri(configuration["Services:Catalogue"]!);
             })
+            .AddHttpMessageHandler<CorrelationIdDelegatingHandler>()
             .AddStandardResilienceHandler(ConfigureInternalResilience);
 
         return services;
