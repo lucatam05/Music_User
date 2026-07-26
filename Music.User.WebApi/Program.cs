@@ -1,6 +1,8 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Music.User.Business;
@@ -9,6 +11,7 @@ using Music.User.Repository;
 using Music.User.Repository.Abstractions;
 using MusicUser;
 using MusicUser.Correlation;
+using MusicUser.HealthChecks;
 using MusicUser.Kafka;
 using MusicUser.Middlewares;
 using Serilog;
@@ -49,6 +52,10 @@ try
     builder.Services.AddTransient<SongRemovedHandler>();
 
     builder.Services.AddKafkaConsumerService<UserKafkaTopics, MessageHandlerFactory>(builder.Configuration);
+
+    builder.Services.AddHealthChecks()
+        .AddDbContextCheck<UserDbContext>("database")
+        .AddCheck<KafkaHealthCheck>("kafka");
 
     // JWT Authentication
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -130,6 +137,13 @@ try
     app.UseSwaggerUI();
     app.UseAuthentication();
     app.UseAuthorization();
+
+    app.MapHealthChecks("/health", new HealthCheckOptions
+        {
+            ResponseWriter = HealthCheckResponseWriter.WriteAsync
+        })
+        .AllowAnonymous();
+
     app.MapControllers();
 
     await app.RunAsync();
